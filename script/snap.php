@@ -77,6 +77,26 @@ if ($branch->hasNewRevision() || !$branch->isLastRevisionExported($branch->getLa
 	}
 	$src_original_path =  $branch->createSourceSnap($build_type, $last_rev);
 
+	foreach(['oci8', 'pdo_oci'] as $oci_ext) {
+		$oci_extract_dir = $src_original_path . '/ext/' . $oci_ext;
+		if(!is_dir($oci_extract_dir)) {
+			$url = "https://github.com/php/pecl-database-" . $oci_ext . "/archive/refs/heads/main.zip";
+			$oci_zip_file = tempnam(sys_get_temp_dir(), 'zip');
+			file_put_contents($oci_zip_file, file_get_contents($url));
+			$cmd = 'unzip -q -o ' . $oci_zip_file . ' -d ' . $oci_extract_dir;
+			$res = rm\exec_single_log($cmd);
+			if (!$res) {
+				throw new \Exception("Unzipping $oci_zip_file failed.");
+			}
+			$sub_directory = $oci_extract_dir . '/pecl-database-' . $oci_ext . '-main';
+			$res = rm\exec_single_log('mv ' . $sub_directory . '/* ' . $oci_extract_dir);
+			if (!$res) {
+				throw new \Exception("Unzipping $oci_zip_file failed.");
+			}
+			rm\rmdir_rf($sub_directory);
+		}
+	}
+
 	$toupload_dir = TMP_DIR . '/' . $branch_name . '/r' . $last_rev . '-builds/';
 	if (!is_dir($toupload_dir)) {
 		mkdir($toupload_dir, 0655, true);
