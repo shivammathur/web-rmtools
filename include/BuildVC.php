@@ -6,6 +6,8 @@ class BuildVC {
 	public $branch;
 	public $build_name;
 	public $env;
+	public $compiler;
+	public $architecture;
 	private $obj_dir;
 	private $build_dir;
 	protected $old_cwd;

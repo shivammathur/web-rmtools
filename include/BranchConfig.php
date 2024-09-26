@@ -3,6 +3,7 @@ namespace rmtools;
 
 class BranchConfig {
 	private $config = NULL;
+	protected $builds = [];
 	private $config_keys = array(
 		'ConfigureOptions' => 'configure_options',
 		'BuildDir'		=> 'build_dir',
