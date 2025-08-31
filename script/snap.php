@@ -81,11 +81,13 @@ if ($branch->hasNewRevision() || !$branch->isLastRevisionExported($branch->getLa
 		$oci_extract_dir = $src_original_path . '/ext/' . $oci_ext;
 		if(!is_dir($oci_extract_dir)) {			
 			$zip_ref="refs/heads/main";
-			# Remove once merged
-			if($oci_ext == 'pdo_oci') {
-				$zip_ref='7b2761fdc423715f517c66e7fa7ceb05a3280930';
-			}
 			$url = "https://github.com/php/pecl-database-" . $oci_ext . "/archive/$zip_ref.zip";
+			# Remove once merged
+			if($oci_ext == 'pdo_oci') {				
+				$zip_ref='a9cf2c53b6de46f9e5f523bcd11fd344e3beeb85';
+				$url = $url = "https://github.com/shivammathur/pecl-database-" . $oci_ext . "/archive/$zip_ref.zip";
+			}
+			
 			$oci_zip_file = tempnam(sys_get_temp_dir(), 'zip');
 			file_put_contents($oci_zip_file, file_get_contents($url));
 			$cmd = 'unzip -q -o ' . $oci_zip_file . ' -d ' . $oci_extract_dir;
