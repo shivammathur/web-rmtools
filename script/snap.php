@@ -84,7 +84,7 @@ if ($branch->hasNewRevision() || !$branch->isLastRevisionExported($branch->getLa
 			$url = "https://github.com/php/pecl-database-" . $oci_ext . "/archive/$zip_ref.zip";
 			# Remove once merged
 			if($oci_ext == 'pdo_oci') {				
-				$zip_ref='a9cf2c53b6de46f9e5f523bcd11fd344e3beeb85';
+				$zip_ref='fba5e095965a53331c0131a9a76093191c8fb49b';
 				$url = $url = "https://github.com/shivammathur/pecl-database-" . $oci_ext . "/archive/$zip_ref.zip";
 			}
 			
