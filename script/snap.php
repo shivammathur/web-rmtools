@@ -81,12 +81,14 @@ if ($branch->hasNewRevision() || !$branch->isLastRevisionExported($branch->getLa
 		$oci_extract_dir = $src_original_path . '/ext/' . $oci_ext;
 		if(!is_dir($oci_extract_dir)) {			
 			$zip_ref="refs/heads/main";
-			$url = "https://github.com/php/pecl-database-" . $oci_ext . "/archive/$zip_ref.zip";
 			# Remove once merged
 			if($oci_ext == 'pdo_oci') {				
 				$zip_ref='fba5e095965a53331c0131a9a76093191c8fb49b';
-				$url = $url = "https://github.com/shivammathur/pecl-database-" . $oci_ext . "/archive/$zip_ref.zip";
 			}
+			if($oci_ext == 'oci8') {
+				$zip_ref='38d52dc7cdee7b472a31405a705419655d1e0335';
+			}
+			$url = "https://github.com/shivammathur/pecl-database-" . $oci_ext . "/archive/$zip_ref.zip";
 			
 			$oci_zip_file = tempnam(sys_get_temp_dir(), 'zip');
 			file_put_contents($oci_zip_file, file_get_contents($url));
@@ -95,10 +97,7 @@ if ($branch->hasNewRevision() || !$branch->isLastRevisionExported($branch->getLa
 			if (!$res) {
 				throw new \Exception("Unzipping $oci_zip_file failed.");
 			}
-			$sub_directory = $oci_extract_dir . '/pecl-database-' . $oci_ext . '-main';
-			if($oci_ext == 'pdo_oci') {
-				$sub_directory = $oci_extract_dir . '/pecl-database-' . $oci_ext . '-' . $zip_ref;
-			}
+			$sub_directory = $oci_extract_dir . '/pecl-database-' . $oci_ext . '-' . $zip_ref;
 			$res = rm\exec_single_log('mv ' . $sub_directory . '/* ' . $oci_extract_dir);
 			if (!$res) {
 				throw new \Exception("Unzipping $oci_zip_file failed.");
