@@ -50,7 +50,14 @@ function exec_single_log($cmd, $cwd = NULL, $env = NULL)
 		// 0 => writeable handle connected to child stdin
 		// 1 => readable handle connected to child stdout
 		// Any error output will be appended to /tmp/error-output.txt
-		$log = stream_get_contents($pipes[1]);
+		$log = '';
+		while (($chunk = fgets($pipes[1])) !== false) {
+			$log .= $chunk;
+			if (getenv('GITHUB_ACTIONS') === 'true') {
+				echo $chunk;
+				flush();
+			}
+		}
 		fclose($pipes[1]);
 		$return_value = proc_close($process);
 	} else {
